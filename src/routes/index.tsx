@@ -72,10 +72,13 @@ function Index() {
           </div>
           <div className="grid gap-6 md:grid-cols-3">
             {news.map((n) => (
-              <article key={n.title} className="rounded-xl bg-card p-6 border border-border hover:border-accent transition">
-                <p className="text-xs font-bold uppercase tracking-widest text-secondary">{n.date}</p>
-                <h3 className="mt-2 font-display text-xl font-bold text-primary">{n.title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{n.body}</p>
+              <article key={n.id} className="rounded-xl bg-card border border-border hover:border-accent transition overflow-hidden">
+                {n.cover_image_url && <img src={n.cover_image_url} alt={n.title} className="aspect-video w-full object-cover" />}
+                <div className="p-6">
+                  <p className="text-xs font-bold uppercase tracking-widest text-secondary">{new Date(n.published_at).toLocaleDateString(undefined, { day: "2-digit", month: "short" })}</p>
+                  <h3 className="mt-2 font-display text-xl font-bold text-primary">{n.title}</h3>
+                  {n.excerpt && <p className="mt-2 text-sm text-muted-foreground">{n.excerpt}</p>}
+                </div>
               </article>
             ))}
           </div>
