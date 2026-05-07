@@ -13,10 +13,12 @@ import { Route as StaffRouteImport } from './routes/staff'
 import { Route as DocumentsRouteImport } from './routes/documents'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ApplyRouteImport } from './routes/apply'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as ActivitiesRouteImport } from './routes/activities'
 import { Route as AchievementsRouteImport } from './routes/achievements'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 
 const StaffRoute = StaffRouteImport.update({
@@ -39,6 +41,11 @@ const ApplyRoute = ApplyRouteImport.update({
   path: '/apply',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ActivitiesRoute = ActivitiesRouteImport.update({
   id: '/activities',
   path: '/activities',
@@ -59,10 +66,15 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminLoginRoute = AdminLoginRouteImport.update({
-  id: '/admin/login',
-  path: '/admin/login',
-  getParentRoute: () => rootRouteImport,
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AdminRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -70,11 +82,13 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/achievements': typeof AchievementsRoute
   '/activities': typeof ActivitiesRoute
+  '/admin': typeof AdminRouteWithChildren
   '/apply': typeof ApplyRoute
   '/contact': typeof ContactRoute
   '/documents': typeof DocumentsRoute
   '/staff': typeof StaffRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/': typeof AdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -86,6 +100,7 @@ export interface FileRoutesByTo {
   '/documents': typeof DocumentsRoute
   '/staff': typeof StaffRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin': typeof AdminIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -93,11 +108,13 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/achievements': typeof AchievementsRoute
   '/activities': typeof ActivitiesRoute
+  '/admin': typeof AdminRouteWithChildren
   '/apply': typeof ApplyRoute
   '/contact': typeof ContactRoute
   '/documents': typeof DocumentsRoute
   '/staff': typeof StaffRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/': typeof AdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -106,11 +123,13 @@ export interface FileRouteTypes {
     | '/about'
     | '/achievements'
     | '/activities'
+    | '/admin'
     | '/apply'
     | '/contact'
     | '/documents'
     | '/staff'
     | '/admin/login'
+    | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -122,17 +141,20 @@ export interface FileRouteTypes {
     | '/documents'
     | '/staff'
     | '/admin/login'
+    | '/admin'
   id:
     | '__root__'
     | '/'
     | '/about'
     | '/achievements'
     | '/activities'
+    | '/admin'
     | '/apply'
     | '/contact'
     | '/documents'
     | '/staff'
     | '/admin/login'
+    | '/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -140,11 +162,11 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AchievementsRoute: typeof AchievementsRoute
   ActivitiesRoute: typeof ActivitiesRoute
+  AdminRoute: typeof AdminRouteWithChildren
   ApplyRoute: typeof ApplyRoute
   ContactRoute: typeof ContactRoute
   DocumentsRoute: typeof DocumentsRoute
   StaffRoute: typeof StaffRoute
-  AdminLoginRoute: typeof AdminLoginRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -177,6 +199,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApplyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/activities': {
       id: '/activities'
       path: '/activities'
@@ -205,26 +234,45 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/login': {
       id: '/admin/login'
-      path: '/admin/login'
+      path: '/login'
       fullPath: '/admin/login'
       preLoaderRoute: typeof AdminLoginRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRoute
     }
   }
 }
+
+interface AdminRouteChildren {
+  AdminLoginRoute: typeof AdminLoginRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminLoginRoute: AdminLoginRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AchievementsRoute: AchievementsRoute,
   ActivitiesRoute: ActivitiesRoute,
+  AdminRoute: AdminRouteWithChildren,
   ApplyRoute: ApplyRoute,
   ContactRoute: ContactRoute,
   DocumentsRoute: DocumentsRoute,
   StaffRoute: StaffRoute,
-  AdminLoginRoute: AdminLoginRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
