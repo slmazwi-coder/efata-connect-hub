@@ -11,6 +11,8 @@ import {
 import appCss from "../styles.css?url";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+import { AuthProvider } from "@/lib/auth";
+import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
   return (
@@ -115,11 +117,14 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <SiteHeader />
-      <main className="min-h-[60vh]">
-        <Outlet />
-      </main>
-      <SiteFooter />
+      <AuthProvider>
+        <SiteHeader />
+        <main className="min-h-[60vh]">
+          <Outlet />
+        </main>
+        <SiteFooter />
+        <Toaster />
+      </AuthProvider>
     </QueryClientProvider>
   );
 }

@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader } from "@/components/PageHeader";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/staff")({
   head: () => ({
@@ -13,41 +15,37 @@ export const Route = createFileRoute("/staff")({
   component: Staff,
 });
 
-const team = [
-  { name: "Ms. N. Rasmeni", role: "Principal", section: "Leadership" },
-  { name: "Deputy Principal", role: "Deputy Principal", section: "Leadership" },
-  { name: "HOD — Blind Section", role: "Head of Department", section: "Blind Section" },
-  { name: "HOD — Deaf Section", role: "Head of Department", section: "Deaf Section" },
-  { name: "Braille Specialist", role: "Senior Educator", section: "Blind Section" },
-  { name: "SASL Educator", role: "Senior Educator", section: "Deaf Section" },
-  { name: "Orientation & Mobility", role: "Specialist", section: "Blind Section" },
-  { name: "Audiologist", role: "Specialist", section: "Deaf Section" },
-];
+type Member = { id: string; name: string; role: string; section: string | null; bio: string | null; photo_url: string | null };
 
 function Initials({ name }: { name: string }) {
   const init = name.split(" ").map((s) => s[0]).slice(0, 2).join("");
-  return (
-    <div className="flex h-20 w-20 items-center justify-center rounded-full gradient-brand text-primary-foreground font-display text-2xl font-bold">
-      {init}
-    </div>
-  );
+  return <div className="flex h-20 w-20 items-center justify-center rounded-full gradient-brand text-primary-foreground font-display text-2xl font-bold">{init}</div>;
 }
 
 function Staff() {
+  const [team, setTeam] = useState<Member[]>([]);
+  useEffect(() => {
+    supabase.from("staff_members").select("*").order("sort_order").then(({ data }) => setTeam((data as Member[]) ?? []));
+  }, []);
+
   return (
     <>
       <PageHeader eyebrow="Our team" title="Staff & Leadership" subtitle="A dedicated team of specialists, educators and support staff serving learners across both sections." />
       <section className="mx-auto max-w-7xl px-6 py-16">
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {team.map((m) => (
-            <div key={m.name} className="rounded-xl border border-border bg-card p-6 text-center hover:border-accent transition">
-              <div className="flex justify-center"><Initials name={m.name} /></div>
-              <h3 className="mt-4 font-display text-lg font-bold text-primary">{m.name}</h3>
-              <p className="text-sm text-muted-foreground">{m.role}</p>
-              <span className="mt-3 inline-block rounded-full bg-muted px-3 py-1 text-xs font-semibold uppercase tracking-widest text-secondary">{m.section}</span>
-            </div>
-          ))}
-        </div>
+        {team.length === 0 ? <p className="text-center text-muted-foreground">Staff list coming soon.</p> : (
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {team.map((m) => (
+              <div key={m.id} className="rounded-xl border border-border bg-card p-6 text-center hover:border-accent transition">
+                <div className="flex justify-center">
+                  {m.photo_url ? <img src={m.photo_url} alt={m.name} className="h-20 w-20 rounded-full object-cover" /> : <Initials name={m.name} />}
+                </div>
+                <h3 className="mt-4 font-display text-lg font-bold text-primary">{m.name}</h3>
+                <p className="text-sm text-muted-foreground">{m.role}</p>
+                {m.section && <span className="mt-3 inline-block rounded-full bg-muted px-3 py-1 text-xs font-semibold uppercase tracking-widest text-secondary">{m.section}</span>}
+              </div>
+            ))}
+          </div>
+        )}
       </section>
     </>
   );

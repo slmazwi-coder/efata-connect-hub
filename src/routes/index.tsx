@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { HeroCarousel } from "@/components/HeroCarousel";
 import { Eye, Ear, GraduationCap, Heart, ArrowRight } from "lucide-react";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -12,13 +14,21 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const news = [
-  { date: "27 Apr", title: "Freedom Day Celebration", body: "Our learners marked Freedom Day with songs, sign and Braille readings." },
-  { date: "12 Apr", title: "Matric Mid-Year Results", body: "Strong improvements across the Blind and Deaf sections — well done!" },
-  { date: "03 Apr", title: "New Braille Library Books", body: "We received a new donation of Braille textbooks for grades 8–12." },
+type News = { id: string; title: string; excerpt: string | null; published_at: string; cover_image_url: string | null };
+
+const fallbackNews: News[] = [
+  { id: "1", title: "Freedom Day Celebration", excerpt: "Our learners marked Freedom Day with songs, sign and Braille readings.", published_at: new Date("2026-04-27").toISOString(), cover_image_url: null },
+  { id: "2", title: "Matric Mid-Year Results", excerpt: "Strong improvements across the Blind and Deaf sections — well done!", published_at: new Date("2026-04-12").toISOString(), cover_image_url: null },
+  { id: "3", title: "New Braille Library Books", excerpt: "We received a new donation of Braille textbooks for grades 8–12.", published_at: new Date("2026-04-03").toISOString(), cover_image_url: null },
 ];
 
 function Index() {
+  const [news, setNews] = useState<News[]>(fallbackNews);
+  useEffect(() => {
+    supabase.from("news_posts").select("*").eq("published", true).order("published_at", { ascending: false }).limit(3)
+      .then(({ data }) => { if (data && data.length > 0) setNews(data as News[]); });
+  }, []);
+
   return (
     <>
       <HeroCarousel />
@@ -62,10 +72,13 @@ function Index() {
           </div>
           <div className="grid gap-6 md:grid-cols-3">
             {news.map((n) => (
-              <article key={n.title} className="rounded-xl bg-card p-6 border border-border hover:border-accent transition">
-                <p className="text-xs font-bold uppercase tracking-widest text-secondary">{n.date}</p>
-                <h3 className="mt-2 font-display text-xl font-bold text-primary">{n.title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{n.body}</p>
+              <article key={n.id} className="rounded-xl bg-card border border-border hover:border-accent transition overflow-hidden">
+                {n.cover_image_url && <img src={n.cover_image_url} alt={n.title} className="aspect-video w-full object-cover" />}
+                <div className="p-6">
+                  <p className="text-xs font-bold uppercase tracking-widest text-secondary">{new Date(n.published_at).toLocaleDateString(undefined, { day: "2-digit", month: "short" })}</p>
+                  <h3 className="mt-2 font-display text-xl font-bold text-primary">{n.title}</h3>
+                  {n.excerpt && <p className="mt-2 text-sm text-muted-foreground">{n.excerpt}</p>}
+                </div>
               </article>
             ))}
           </div>
