@@ -1,6 +1,7 @@
 {
-  "framework": null,
-  "buildCommand": "vite build",
-  "outputDirectory": "dist",
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "version": 2,
+  "bunVersion": "1.x",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/api/index" }
+  ]
 }
