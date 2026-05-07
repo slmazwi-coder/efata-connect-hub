@@ -1,5 +1,13 @@
 import { useEffect, useState, type ReactNode } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase as typedSupabase } from "@/integrations/supabase/client";
+const supabase = typedSupabase as unknown as {
+  from: (t: string) => {
+    select: (s: string) => { order: (c: string, o?: { ascending?: boolean }) => Promise<{ data: unknown[] | null; error: { message: string } | null }> } & Promise<{ data: unknown[] | null; error: { message: string } | null }>;
+    insert: (v: Record<string, unknown>) => Promise<{ error: { message: string } | null }>;
+    update: (v: Record<string, unknown>) => { eq: (c: string, val: string) => Promise<{ error: { message: string } | null }> };
+    delete: () => { eq: (c: string, val: string) => Promise<{ error: { message: string } | null }> };
+  };
+};
 import { uploadMedia } from "@/lib/upload";
 import { Pencil, Trash2, Plus, X, Upload } from "lucide-react";
 import { toast } from "sonner";
@@ -31,9 +39,9 @@ export function CrudManager<T extends { id: string; [k: string]: unknown }>({ ta
 
   const load = async () => {
     let q = supabase.from(table).select("*");
-    if (orderBy) q = q.order(orderBy.column, { ascending: orderBy.ascending ?? true });
+    if (orderBy) q = q.order(orderBy.column, { ascending: orderBy.ascending ?? true }) as typeof q;
     const { data } = await q;
-    setRows((data as T[]) ?? []);
+    setRows(((data as unknown) as T[]) ?? []);
   };
   useEffect(() => { load(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [table]);
 
