@@ -140,7 +140,7 @@ export function CrudManager<T extends { id: string; [k: string]: unknown }>({ ta
                           <input type="file" accept={f.type === "image" ? "image/*" : undefined} className="hidden"
                             onChange={(e) => e.target.files?.[0] && handleFileUpload(f.name, e.target.files[0])} />
                         </label>
-                        {f.type === "image" && val && <img src={val as string} alt="" className="h-24 rounded border border-border object-cover" />}
+                        {f.type === "image" && typeof val === "string" && val ? <img src={val} alt="" className="h-24 rounded border border-border object-cover" /> : null}
                       </div>
                     ) : (
                       <input type="text" value={(val as string) ?? ""} placeholder={f.placeholder} onChange={(e) => setField(f.name, e.target.value)} className={common} />
