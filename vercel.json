@@ -1,7 +1,12 @@
 {
   "version": 2,
-  "bunVersion": "1.x",
+  "framework": null,
+  "buildCommand": "npm run build",
+  "outputDirectory": ".output/public",
   "rewrites": [
-    { "source": "/(.*)", "destination": "/api/index" }
+    {
+      "source": "/(.*)",
+      "destination": "/"
+    }
   ]
 }
