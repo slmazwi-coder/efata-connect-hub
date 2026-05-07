@@ -19,15 +19,17 @@ export function SiteFooter() {
             <li><Link to="/staff" className="hover:text-accent">Our Staff</Link></li>
             <li><Link to="/documents" className="hover:text-accent">Documents</Link></li>
             <li><Link to="/apply" className="hover:text-accent">Online Application</Link></li>
+            <li><Link to="/achievements" className="hover:text-accent">Achievements</Link></li>
+            <li><Link to="/activities" className="hover:text-accent">Activities</Link></li>
             <li><Link to="/contact" className="hover:text-accent">Contact Us</Link></li>
           </ul>
         </div>
         <div>
           <h4 className="font-semibold mb-3">Get in touch</h4>
           <ul className="space-y-2 text-sm text-primary-foreground/85">
-            <li className="flex gap-2"><MapPin className="h-4 w-4 mt-0.5 text-accent" /> Queenstown R61 Road, Mthatha, 5099</li>
-            <li className="flex gap-2"><Phone className="h-4 w-4 mt-0.5 text-accent" /> 047 536 0527 · 082 776 1513</li>
-            <li className="flex gap-2"><Mail className="h-4 w-4 mt-0.5 text-accent" /> efatablinddeaf@gmail.com</li>
+            <li className="flex gap-2"><MapPin className="h-4 w-4 mt-0.5 text-accent" /><span>Queenstown R61 Road, Mthatha, 5099</span></li>
+            <li className="flex gap-2"><Phone className="h-4 w-4 mt-0.5 text-accent" /><span>047 536 0527 · 082 776 1513</span></li>
+            <li className="flex gap-2"><Mail className="h-4 w-4 mt-0.5 text-accent" /><span>efatablinddeaf@gmail.com</span></li>
           </ul>
         </div>
       </div>
