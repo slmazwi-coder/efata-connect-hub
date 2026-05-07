@@ -37,7 +37,27 @@ function Apply() {
       <PageHeader eyebrow="Admissions" title="Online Application" subtitle="Complete the form below to apply for admission. Required fields are marked with *." />
       <section className="mx-auto max-w-3xl px-6 py-16">
         <form
-          onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }}
+          onSubmit={async (e) => {
+            e.preventDefault();
+            const f = new FormData(e.currentTarget);
+            const payload = {
+              learner_name: String(f.get("name") || ""),
+              date_of_birth: (f.get("dob") as string) || null,
+              id_number: (f.get("id") as string) || null,
+              gender: (f.get("gender") as string) || null,
+              section: String(f.get("section") || ""),
+              grade: String(f.get("grade") || ""),
+              parent_name: String(f.get("parent") || ""),
+              relationship: (f.get("relationship") as string) || null,
+              phone: String(f.get("phone") || ""),
+              email: (f.get("email") as string) || null,
+              address: (f.get("address") as string) || null,
+              notes: (f.get("notes") as string) || null,
+            };
+            const { error } = await supabase.from("applications").insert(payload);
+            if (error) { toast.error(error.message); return; }
+            setSubmitted(true);
+          }}
           className="rounded-2xl border border-border bg-card p-8 shadow-sm space-y-6"
         >
           <div className="grid gap-5 sm:grid-cols-2">
