@@ -19,7 +19,14 @@ import { Route as AchievementsRouteImport } from './routes/achievements'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminStaffRouteImport } from './routes/admin.staff'
+import { Route as AdminNewsRouteImport } from './routes/admin.news'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as AdminHeroRouteImport } from './routes/admin.hero'
+import { Route as AdminDocumentsRouteImport } from './routes/admin.documents'
+import { Route as AdminApplicationsRouteImport } from './routes/admin.applications'
+import { Route as AdminActivitiesRouteImport } from './routes/admin.activities'
+import { Route as AdminAchievementsRouteImport } from './routes/admin.achievements'
 
 const StaffRoute = StaffRouteImport.update({
   id: '/staff',
@@ -71,9 +78,44 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminStaffRoute = AdminStaffRouteImport.update({
+  id: '/staff',
+  path: '/staff',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminNewsRoute = AdminNewsRouteImport.update({
+  id: '/news',
+  path: '/news',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminLoginRoute = AdminLoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminHeroRoute = AdminHeroRouteImport.update({
+  id: '/hero',
+  path: '/hero',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminDocumentsRoute = AdminDocumentsRouteImport.update({
+  id: '/documents',
+  path: '/documents',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminApplicationsRoute = AdminApplicationsRouteImport.update({
+  id: '/applications',
+  path: '/applications',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminActivitiesRoute = AdminActivitiesRouteImport.update({
+  id: '/activities',
+  path: '/activities',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAchievementsRoute = AdminAchievementsRouteImport.update({
+  id: '/achievements',
+  path: '/achievements',
   getParentRoute: () => AdminRoute,
 } as any)
 
@@ -87,7 +129,14 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/documents': typeof DocumentsRoute
   '/staff': typeof StaffRoute
+  '/admin/achievements': typeof AdminAchievementsRoute
+  '/admin/activities': typeof AdminActivitiesRoute
+  '/admin/applications': typeof AdminApplicationsRoute
+  '/admin/documents': typeof AdminDocumentsRoute
+  '/admin/hero': typeof AdminHeroRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/news': typeof AdminNewsRoute
+  '/admin/staff': typeof AdminStaffRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRoutesByTo {
@@ -99,7 +148,14 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/documents': typeof DocumentsRoute
   '/staff': typeof StaffRoute
+  '/admin/achievements': typeof AdminAchievementsRoute
+  '/admin/activities': typeof AdminActivitiesRoute
+  '/admin/applications': typeof AdminApplicationsRoute
+  '/admin/documents': typeof AdminDocumentsRoute
+  '/admin/hero': typeof AdminHeroRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/news': typeof AdminNewsRoute
+  '/admin/staff': typeof AdminStaffRoute
   '/admin': typeof AdminIndexRoute
 }
 export interface FileRoutesById {
@@ -113,7 +169,14 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/documents': typeof DocumentsRoute
   '/staff': typeof StaffRoute
+  '/admin/achievements': typeof AdminAchievementsRoute
+  '/admin/activities': typeof AdminActivitiesRoute
+  '/admin/applications': typeof AdminApplicationsRoute
+  '/admin/documents': typeof AdminDocumentsRoute
+  '/admin/hero': typeof AdminHeroRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/news': typeof AdminNewsRoute
+  '/admin/staff': typeof AdminStaffRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRouteTypes {
@@ -128,7 +191,14 @@ export interface FileRouteTypes {
     | '/contact'
     | '/documents'
     | '/staff'
+    | '/admin/achievements'
+    | '/admin/activities'
+    | '/admin/applications'
+    | '/admin/documents'
+    | '/admin/hero'
     | '/admin/login'
+    | '/admin/news'
+    | '/admin/staff'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -140,7 +210,14 @@ export interface FileRouteTypes {
     | '/contact'
     | '/documents'
     | '/staff'
+    | '/admin/achievements'
+    | '/admin/activities'
+    | '/admin/applications'
+    | '/admin/documents'
+    | '/admin/hero'
     | '/admin/login'
+    | '/admin/news'
+    | '/admin/staff'
     | '/admin'
   id:
     | '__root__'
@@ -153,7 +230,14 @@ export interface FileRouteTypes {
     | '/contact'
     | '/documents'
     | '/staff'
+    | '/admin/achievements'
+    | '/admin/activities'
+    | '/admin/applications'
+    | '/admin/documents'
+    | '/admin/hero'
     | '/admin/login'
+    | '/admin/news'
+    | '/admin/staff'
     | '/admin/'
   fileRoutesById: FileRoutesById
 }
@@ -241,6 +325,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/staff': {
+      id: '/admin/staff'
+      path: '/staff'
+      fullPath: '/admin/staff'
+      preLoaderRoute: typeof AdminStaffRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/news': {
+      id: '/admin/news'
+      path: '/news'
+      fullPath: '/admin/news'
+      preLoaderRoute: typeof AdminNewsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/login': {
       id: '/admin/login'
       path: '/login'
@@ -248,16 +346,65 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLoginRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/hero': {
+      id: '/admin/hero'
+      path: '/hero'
+      fullPath: '/admin/hero'
+      preLoaderRoute: typeof AdminHeroRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/documents': {
+      id: '/admin/documents'
+      path: '/documents'
+      fullPath: '/admin/documents'
+      preLoaderRoute: typeof AdminDocumentsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/applications': {
+      id: '/admin/applications'
+      path: '/applications'
+      fullPath: '/admin/applications'
+      preLoaderRoute: typeof AdminApplicationsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/activities': {
+      id: '/admin/activities'
+      path: '/activities'
+      fullPath: '/admin/activities'
+      preLoaderRoute: typeof AdminActivitiesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/achievements': {
+      id: '/admin/achievements'
+      path: '/achievements'
+      fullPath: '/admin/achievements'
+      preLoaderRoute: typeof AdminAchievementsRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
 interface AdminRouteChildren {
+  AdminAchievementsRoute: typeof AdminAchievementsRoute
+  AdminActivitiesRoute: typeof AdminActivitiesRoute
+  AdminApplicationsRoute: typeof AdminApplicationsRoute
+  AdminDocumentsRoute: typeof AdminDocumentsRoute
+  AdminHeroRoute: typeof AdminHeroRoute
   AdminLoginRoute: typeof AdminLoginRoute
+  AdminNewsRoute: typeof AdminNewsRoute
+  AdminStaffRoute: typeof AdminStaffRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminAchievementsRoute: AdminAchievementsRoute,
+  AdminActivitiesRoute: AdminActivitiesRoute,
+  AdminApplicationsRoute: AdminApplicationsRoute,
+  AdminDocumentsRoute: AdminDocumentsRoute,
+  AdminHeroRoute: AdminHeroRoute,
   AdminLoginRoute: AdminLoginRoute,
+  AdminNewsRoute: AdminNewsRoute,
+  AdminStaffRoute: AdminStaffRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
 
@@ -277,3 +424,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
