@@ -7,7 +7,7 @@ export const Route = createFileRoute("/admin")({
   component: AdminLayout,
 });
 
-const items = [
+const items: { to: string; label: string; icon: typeof LayoutDashboard; exact?: boolean }[] = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { to: "/admin/news", label: "News", icon: Newspaper },
   { to: "/admin/hero", label: "Hero Slides", icon: Image },
@@ -16,7 +16,7 @@ const items = [
   { to: "/admin/achievements", label: "Achievements", icon: Trophy },
   { to: "/admin/activities", label: "Activities", icon: Activity },
   { to: "/admin/applications", label: "Applications", icon: Inbox },
-] as const;
+];
 
 function AdminLayout() {
   const { user, isAdmin, loading, signOut } = useAuth();
@@ -40,7 +40,7 @@ function AdminLayout() {
           {items.map((it) => {
             const active = it.exact ? path === it.to : path.startsWith(it.to);
             return (
-              <Link key={it.to} to={it.to}
+              <Link key={it.to} to={it.to as string}
                 className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm ${active ? "bg-primary text-primary-foreground font-semibold" : "hover:bg-muted"}`}>
                 <it.icon className="h-4 w-4" /> {it.label}
               </Link>
