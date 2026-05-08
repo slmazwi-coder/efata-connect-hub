@@ -16,9 +16,30 @@ type Slide = {
 };
 
 const fallback: Slide[] = [
-  { image: grad, eyebrow: "News & Updates", title: "Class of 2026 Graduation", desc: "Celebrating our matriculants from both the Blind and Deaf sections.", ctaLabel: "Read more", ctaHref: "/about" },
-  { image: hall, eyebrow: "School Life", title: "Inclusive Learning, Every Day", desc: "Specialised teaching for visually impaired and Deaf learners.", ctaLabel: "Our programs", ctaHref: "/about" },
-  { image: freedom, eyebrow: "Latest Event", title: "Happy Freedom Day — Unity in Diversity", desc: "Honouring 27 April with our learners, staff and community.", ctaLabel: "Get involved", ctaHref: "/contact" },
+  { 
+    image: grad, 
+    eyebrow: "Admissions 2026", 
+    title: "Start Your Journey With Us", 
+    desc: "Applications for the Class of 2026 are now open for both Blind and Deaf sections.", 
+    ctaLabel: "Begin Application", 
+    ctaHref: "/apply" 
+  },
+  { 
+    image: hall, 
+    eyebrow: "School Life", 
+    title: "Inclusive Learning Environment", 
+    desc: "Explore our specialized programs and facilities for our learners.", 
+    ctaLabel: "View Programs", 
+    ctaHref: "/about" 
+  },
+  { 
+    image: freedom, 
+    eyebrow: "Boarding & Residence", 
+    title: "A Home Away From Home", 
+    desc: "Learn more about our boarding facilities and student support services.", 
+    ctaLabel: "Boarding Info", 
+    ctaHref: "/boarding" 
+  },
 ];
 
 export function HeroCarousel() {
@@ -35,7 +56,7 @@ export function HeroCarousel() {
           title: s.title,
           desc: s.subtitle ?? "",
           ctaLabel: s.cta_label || "Learn more",
-          ctaHref: s.cta_href || "/about",
+          ctaHref: s.cta_href || "/apply",
         })));
       }
     });
@@ -45,6 +66,7 @@ export function HeroCarousel() {
     const t = setInterval(() => setI((p) => (p + 1) % slides.length), 6000);
     return () => clearInterval(t);
   }, [slides.length]);
+
   const go = (d: number) => setI((p) => (p + d + slides.length) % slides.length);
 
   return (
@@ -59,8 +81,14 @@ export function HeroCarousel() {
               <h1 className="mt-4 font-display text-4xl md:text-6xl font-bold text-shadow-hero leading-tight">{s.title}</h1>
               <p className="mt-4 text-base md:text-lg text-primary-foreground/90 max-w-xl">{s.desc}</p>
               <div className="mt-7 flex flex-wrap gap-3">
-                <Link to={s.ctaHref} className="inline-flex items-center rounded-md bg-accent px-5 py-3 text-sm font-semibold text-accent-foreground hover:brightness-95 transition">{s.ctaLabel}</Link>
-                <Link to="/apply" className="inline-flex items-center rounded-md border border-primary-foreground/40 bg-primary-foreground/10 px-5 py-3 text-sm font-semibold backdrop-blur hover:bg-primary-foreground/20 transition">Apply Online</Link>
+                {/* Fixed: This button now correctly points to the ctaHref which defaults to /apply */}
+                <Link to={s.ctaHref} className="inline-flex items-center rounded-md bg-accent px-5 py-3 text-sm font-semibold text-accent-foreground hover:brightness-95 transition">
+                  {s.ctaLabel}
+                </Link>
+                {/* Fixed: Standardized to go to the primary application route */}
+                <Link to="/apply" className="inline-flex items-center rounded-md border border-primary-foreground/40 bg-primary-foreground/10 px-5 py-3 text-sm font-semibold backdrop-blur hover:bg-primary-foreground/20 transition">
+                  General Application
+                </Link>
               </div>
             </div>
           </div>
