@@ -1,11 +1,13 @@
-import { defineConfig } from "@lovable.dev/vite-tanstack-config";
+import { defineConfig } from "@tanstack/react-start/config";
+import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
-  tanstackStart: {
-    server: { 
-      // This path must be relative to the root where this file sits
-      entry: "api/index.ts",
-      preset: "vercel" 
-    },
-  }
+  server: {
+    preset: "vercel",
+  },
+  vite: {
+    plugins: [
+      tsconfigPaths(),
+    ],
+  },
 });
