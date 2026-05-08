@@ -6,10 +6,5 @@ export default defineConfig({
   plugins: [
     tanstackStart(),
     tsconfigPaths()
-  ],
-  build: {
-    // Explicitly setting output for Vercel
-    outDir: ".output/public",
-    emptyOutDir: true,
-  }
+  ]
 });
